@@ -1,0 +1,55 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        minSdkVersion 13
+        targetSdkVersion 21
+        versionCode 106
+        versionName "1.0.6"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    dataBinding{
+        enabled true
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile 'com.android.support:support-v4:25+'
+    compile 'com.android.support:appcompat-v7:25+'
+    compile 'com.isseiaoki:simplecropview:1.1.4'
+    testCompile 'junit:junit:4.12'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer{
+            repository(url: "http://edreamnexus.edreamnet.com:8080/edream-nexus/content/repositories/thirdparty/") {
+                authentication(userName: "$mavenUser", password: "$mavenPassword")
+            }
+            pom.groupId = "com.edream.libs"
+            pom.artifactId = "EdImageCrop"
+            pom.version = '1.0.6'
+            pom.packaging = 'aar'
+        }
+    }
+}
